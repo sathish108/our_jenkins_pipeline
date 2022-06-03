@@ -32,14 +32,17 @@ pipeline {
         stage('Compile,Test & Package') {
 	        steps{
 		    sh "mvn clean package"  
-		    post {
-		       always {
-		       sh "mvn clean deploy"
-		       }		
-	            }
-                }
-	}		
-
+		    junit 'target/surefire-reports/*.xml'
+                    archiveArtifacts artifacts: '**/*.war', followSymlinks: false
+		}		
+	}
+                
+	    
+	stage('Deploying in to Nexus Server') {
+	        steps{
+		        sh "mvn clean deploy"  
+	        }
+        }
         stage('Build Docker Image') {
             steps{
                 sh "docker build -t ecr_testing_repo ."  
