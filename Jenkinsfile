@@ -19,24 +19,15 @@ pipeline {
         stage('SonarQube analysis') {
             steps{
 		  
-		 
 		echo "Sonar Scanner"
                 sh "mvn sonar:sonar \
                 -Dsonar.host.url=http://44.201.116.110:9000 \
                 -Dsonar.login=fec74e7156c6b4441ee5acf4ac9fe684a3f99c7b"
-		
-            }                     
-       }
         
-        
-        stage("Quality gate") {
-            steps {
-                waitforQualityGate abortPipeline: false
-            }
-            post {
-                failure {
-                    mail bcc: '', body: ''' Sonarqube Returns QualityGate Failure''',
-                    cc: '', from: '', replyTo: '', subject: 'SonarQube Returns Quality Failure', to: 'prabagar.chinnappa@photon.com'
+                post {
+                    failure {
+                        mail bcc: '', body: ''' Sonarqube Returns QualityGate Failure''',
+                        cc: '', from: '', replyTo: '', subject: 'SonarQube Returns Quality Failure', to: 'kolatiprasanth@gmail.com'
                 }
             }
         }
