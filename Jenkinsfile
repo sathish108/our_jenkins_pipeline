@@ -19,7 +19,7 @@ pipeline {
         stage('SonarQube analysis') {
             steps{
 		  
-		sh "mvn clean compile"  
+		 
 		echo "Sonar Scanner"
                 sh "mvn sonar:sonar \
                 -Dsonar.host.url=http://44.201.116.110:9000 \
