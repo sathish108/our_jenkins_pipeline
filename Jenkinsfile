@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+	agent { label 'Build_server'}
 
     tools {
         // Install the Maven version configured as "M3" and add it to the path.
@@ -12,13 +12,13 @@ pipeline {
         stage('Pull The Code From Git To Jenkins Server') {
             steps{
                 git credentialsId: 'github', url: 'https://github.com/kprasanth999/our_jenkins_pipeline.git'    
-	        
-		 sh "ls -a"
+	        stash 'Source'
+		sh "ls -a"
 	        }
 	    }	
 	    
         
-       stage('SonarQube analysis') {
+        stage('SonarQube analysis') {
             steps{
 		  
 		sh "mvn clean compile"  
