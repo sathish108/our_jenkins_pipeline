@@ -13,6 +13,7 @@ pipeline {
             steps{
                 git credentialsId: 'github', url: 'https://github.com/kprasanth999/our_jenkins_pipeline.git'    
 	            stash 'Source'
+		 sh "ls -a"
 	        }
 	    }	
 	    
@@ -22,10 +23,9 @@ pipeline {
 		  
 		sh "mvn clean compile"  
 		echo "Sonar Scanner"
-                withSonarQubeEnv('sonar-7') { 
-                    sh "mvn sonar:sonar \
-                    -Dsonar.host.url=http://44.201.116.110:9000 \
-                    -Dsonar.login=fec74e7156c6b4441ee5acf4ac9fe684a3f99c7b"
+                sh "mvn sonar:sonar \
+                -Dsonar.host.url=http://44.201.116.110:9000 \
+                -Dsonar.login=fec74e7156c6b4441ee5acf4ac9fe684a3f99c7b"
 		
                 }                     
             }
