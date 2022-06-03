@@ -11,8 +11,8 @@ pipeline {
         
         stage('Pull The Code From Git To Jenkins Server') {
             steps{
-                git credentialsId: 'GIthub', url: 'https://github.com/kprasanth999/our_jenkins_pipeline.git'    
-	            stash 'Source'
+                git credentialsId: 'github', url: 'https://github.com/kprasanth999/our_jenkins_pipeline.git'    
+	        
 		 sh "ls -a"
 	        }
 	    }	
