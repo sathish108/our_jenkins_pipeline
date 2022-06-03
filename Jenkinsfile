@@ -1,5 +1,5 @@
 pipeline {
-    agent Build_server
+    agent any
 
     tools {
         // Install the Maven version configured as "M3" and add it to the path.
@@ -89,10 +89,12 @@ pipeline {
       
 
         stage('Notify UAT through a Mail') {
-            mail bcc: '', body: '''Please Pull the Image From ECR With this name for Testing
-            acct_id.dkr.ecr.us-east-1.amazonaws.com/ecr_testing_repo:latest''',
-            cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: 'prabagar.chinnappa@photon.com'
-        }
+	    steps {
+                mail bcc: '', body: '''Please Pull the Image From ECR With this name for Testing
+                acct_id.dkr.ecr.us-east-1.amazonaws.com/ecr_testing_repo:latest''',
+                cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: 'prabagar.chinnappa@photon.com'
+            }
+	}	
 
 
         stage('approve') {
