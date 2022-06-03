@@ -33,7 +33,7 @@ pipeline {
 	        steps{
 		    sh "mvn clean package"  
 		    junit 'target/surefire-reports/*.xml'
-                    archiveArtifacts artifacts: '**/*.war', followSymlinks: false
+                    archiveArtifacts artifacts: '**/*.jar', followSymlinks: false
 		}		
 	}
                 
