@@ -27,9 +27,8 @@ pipeline {
                 -Dsonar.host.url=http://44.201.116.110:9000 \
                 -Dsonar.login=fec74e7156c6b4441ee5acf4ac9fe684a3f99c7b"
 		
-                }                     
-            }
-        }
+            }                     
+       }
         
         
         stage("Quality gate") {
