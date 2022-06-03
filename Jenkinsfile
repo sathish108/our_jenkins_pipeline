@@ -31,7 +31,7 @@ pipeline {
         
         stage("Quality gate") {
             steps {
-                waitforQualityGate abortPipeline: true
+                waitforQualityGate abortPipeline: false
             }
             post {
                 failure {
