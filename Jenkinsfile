@@ -31,17 +31,14 @@ pipeline {
 
         stage('Compile,Test & Package') {
 	        steps{
-		        sh "mvn clean package"  
-	        }
-           
-        }   
-        
-	    
-        stage('Deploying in to Nexus Server') {
-	        steps{
-		        sh "mvn clean deploy"  
-	        }
-        }
+		    sh "mvn clean package"  
+		    post {
+		       always {
+		       sh "mvn clean deploy"
+		       }		
+	            }
+                }
+	}		
 
         stage('Build Docker Image') {
             steps{
