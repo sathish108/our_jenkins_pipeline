@@ -21,42 +21,42 @@ pipeline {
 	stage('Compiling the Code') {
 	    steps{
 	        echo "COMPILING THE CODE"
-	        sh "mvn clean compile" 
-            }
+                script{
+		    sh "mvn clean compile" 
+		}   
+	    }
 	}			
         
         stage('SonarQube analysis') {
             steps{
 		  
 		echo "Sonar Scanner"
-                
-		sh "mvn sonar:sonar \
-                -Dsonar.host.url=http://3.84.16.46:9000 \
-                -Dsonar.login=fec74e7156c6b4441ee5acf4ac9fe684a3f99c7b"
-		   
-                post {
-                    failure {
-                        mail bcc: '', body: ''' Sonarqube Returns QualityGate Failure''',
-                        cc: '', from: '', replyTo: '', subject: 'SonarQube Returns Quality Failure', to: 'kpvkpv67@gmail.com'
-                    }
-                }
-	    }
-        }
-
+		    script{
+		         sh "mvn sonar:sonar \
+                         -Dsonar.host.url=http://3.84.16.46:9000 \
+                         -Dsonar.login=fec74e7156c6b4441ee5acf4ac9fe684a3f99c7b"
+		    }
+	    
+			
+                mail bcc: '', body: ''' Sonarqube Returns QualityGate Failure''',
+                cc: '', from: '', replyTo: '', subject: 'SonarQube Returns Quality Failure', to: 'kpvkpv67@gmail.com'
+                  
+            }
+	}
+        
 
         stage('Compile,Test & Package') {
-	        steps{
+	     steps{
+		 script {
+			
 		    sh "mvn clean package" 
-		}		
-		post {
-                    success {
-                        junit 'target/surefire-reports/*.xml'
-                        archiveArtifacts artifacts: '**/*.jar', followSymlinks: false
-                    }
-                }   
+				
+                    junit 'target/surefire-reports/*.xml'
+                    archiveArtifacts artifacts: '**/*.jar', followSymlinks: false
+                 }
+	     }	
+        }   
 		 
-	}
-
                 	    
 	stage('Deploying in to Nexus Server') {
 	        steps{
@@ -113,12 +113,11 @@ pipeline {
                     sh 'docker push 071483313647.dkr.ecr.us-east-1.amazonaws.com/ecr_production_repo:latest'
                 }
             }
-            post{
-                success{
+           
                     mail bcc: '', body: ''' Container Registered in the Production Repository ''',
                     cc: '', from: '', replyTo: '', subject: 'Jenkins Pipeline Success on the New Commit', to: 'kpvkpv67@gmail.com'
-                }
-            }
+                
+            
         }
     }
 }
