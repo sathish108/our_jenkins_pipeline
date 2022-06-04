@@ -57,12 +57,7 @@ pipeline {
 	     }	
         }   
 		 
-                	    
-	stage('Deploying in to Nexus Server') {
-	        steps{
-		        sh "mvn clean deploy"  
-	        }
-        }
+       
         stage('Build Docker Image') {
             steps{
                 sh "docker build -t ecr_testing_repo ."  
