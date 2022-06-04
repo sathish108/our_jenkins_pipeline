@@ -39,7 +39,7 @@ pipeline {
 	    
 			
                 mail bcc: '', body: ''' Sonarqube Returns QualityGate Failure''',
-                cc: '', from: '', replyTo: '', subject: 'SonarQube Returns Quality Failure', to: 'kpvkpv67@gmail.com'
+                cc: '', from: '', replyTo: '', subject: 'SonarQube Returns Quality Passed', to: 'kpvkpv67@gmail.com'
                   
             }
 	}
