@@ -16,29 +16,48 @@ pipeline {
                git branch: 'main', credentialsId: 'Github', url: 'https://github.com/kprasanth999/our_jenkins_pipeline.git'
 	        }
 	    }	
+	 
 	    
+	stage('Compiling the Code') {
+	    steps{
+	        echo "COMPILING THE CODE"
+	        sh "mvn clean compile" 
+            }
+	}			
         
         stage('SonarQube analysis') {
             steps{
 		  
 		echo "Sonar Scanner"
-                sh "mvn sonar:sonar \
-                -Dsonar.host.url=http://44.201.116.110:9000 \
+                
+		sh "mvn sonar:sonar \
+                -Dsonar.host.url=http://3.84.16.46:9000 \
                 -Dsonar.login=fec74e7156c6b4441ee5acf4ac9fe684a3f99c7b"
-        
+		    waitforQualityGate abortPipeline: true
+                post {
+                    failure {
+                        mail bcc: '', body: ''' Sonarqube Returns QualityGate Failure''',
+                        cc: '', from: '', replyTo: '', subject: 'SonarQube Returns Quality Failure', to: 'kpvkpv67@gmail.com'
+                    }
+                }
 	    }
         }
 
 
         stage('Compile,Test & Package') {
 	        steps{
-		    sh "mvn clean package"  
-		    junit 'target/surefire-reports/*.xml'
-                    archiveArtifacts artifacts: '**/*.jar', followSymlinks: false
+		    sh "mvn clean package" 
 		}		
+		post {
+                    success {
+                        junit 'target/surefire-reports/*.xml'
+                        archiveArtifacts artifacts: '**/*.jar', followSymlinks: false
+                    }
+                }   
+		 
 	}
-                
-	    
+
+                	    
 	stage('Deploying in to Nexus Server') {
 	        steps{
 		        sh "mvn clean deploy"  
@@ -67,14 +86,22 @@ pipeline {
             }
         }
       
+        stage('Notify UAT through a Mail') {
+	    steps {
+                mail bcc: '', body: '''Please Pull the Image From ECR With this name for Testing
+                071483313647.ecr.us-east-1.amazonaws.com/ecr_testing_repo:latest''',
+                cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: 'kpvkpv67@gmail.com'
+            }
+	}	
 
-        stage('approve') {
-	     steps {
-	         echo "Approval State"
+	    
+	stage('approve') {
+	    steps {
+	        echo "Approval State"
                  timeout(time: 7, unit: 'DAYS') {                    
 	               input message: 'Do you want to deploy?', submitter: 'Prasanth'
 		 }
-	     }
+	    }
         }
 
 
@@ -86,7 +113,12 @@ pipeline {
                     sh 'docker push 071483313647.dkr.ecr.us-east-1.amazonaws.com/ecr_production_repo:latest'
                 }
             }
-            
+            post{
+                success{
+                    mail bcc: '', body: ''' Container Registered in the Production Repository ''',
+                    cc: '', from: '', replyTo: '', subject: 'Jenkins Pipeline Success on the New Commit', to: 'kpvkpv67@gmail.com'
+                }
+            }
         }
     }
 }
