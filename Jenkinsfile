@@ -33,7 +33,7 @@ pipeline {
 		sh "mvn sonar:sonar \
                 -Dsonar.host.url=http://3.84.16.46:9000 \
                 -Dsonar.login=fec74e7156c6b4441ee5acf4ac9fe684a3f99c7b"
-		    waitforQualityGate abortPipeline: false
+		   
                 post {
                     failure {
                         mail bcc: '', body: ''' Sonarqube Returns QualityGate Failure''',
