@@ -110,7 +110,7 @@ pipeline {
 		nexusUrl: '18.209.23.245:8080/nexus', 
 		nexusVersion: 'nexus2', 
 		protocol: 'http', 
-		repository: 'releases', 
+		repository: 'repositories/releases', 
 		version: '1.0.2'       
         
 	    }
