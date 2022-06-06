@@ -45,7 +45,7 @@ pipeline {
                       script {
                             try{
                        		 def sonar_api_token='da2c37151854a8de06fe5cb14d6dd186a6ab40d3';
-                        	 def sonar_project='webapp';
+                        	 def sonar_project='webapp Maven Webapp';
                         	 sh """#!/bin/bash +x
                         	 echo "Checking status of SonarQube Project = ${sonar_project}"
                         	 sonar_status=`curl -s -u ${sonar_api_token}: http://18.209.23.245:9000/api/qualitygates/project_status?projectKey=${sonar_project} | grep '{' | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["'projectStatus'"]["'status'"];'`
@@ -72,19 +72,14 @@ pipeline {
 			     catch(e){
                                  currentBuild.result = 'UNSTABLE'
                                  result = "FAIL"
-                                 }
+				 mail bcc: '', body: '''SonarQube Quality Gate Passed''', cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: 'kpvkpv67@gmail.com'
+                             }
                     }
                 }
            }
        }		
         
-	    
-        stage('Notify through Mail') {
-	    steps {
-                mail bcc: '', body: '''SonarQube Quality Gate Passed''',
-                cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: 'kpvkpv67@gmail.com'
-            }
-	}	
+	
         
 
         stage('Compile,Test & Package') {
