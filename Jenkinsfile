@@ -31,7 +31,7 @@ pipeline {
 	    
         stage('SonarQube - SAST') {
             steps {
-                  withSonarQubeEnv('SonarQube') {
+                  withSonarQubeEnv('sonar-7') {
                   sh "mvn sonar:sonar \
                   -Dsonar.host.url=http://18.209.23.245:9000 \
                   -Dsonar.login=fec74e7156c6b4441ee5acf4ac9fe684a3f99c7b"
