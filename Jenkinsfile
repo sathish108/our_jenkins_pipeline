@@ -70,10 +70,11 @@ pipeline {
                                   //mark the pipeline as unstable and continue
                                  }
 			     catch(e){
-                                 currentBuild.result = 'UNSTABLE'
+                                 currentBuild.result = 'ABORTED'
                                  result = "FAIL"
 				 mail bcc: '', body: '''SonarQube Quality Gate failed''', cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: 'kpvkpv67@gmail.com'
-                             }
+				 throw e
+			     }
                     }
                 }
            }
