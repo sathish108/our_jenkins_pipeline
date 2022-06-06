@@ -48,7 +48,7 @@ pipeline {
                         	 def sonar_project='webapp';
                         	 sh """#!/bin/bash +x
                         	 echo "Checking status of SonarQube Project = ${sonar_project}"
-                        	 sonar_status=`curl -s -u ${sonar_api_token}: <sonar_url>/api/qualitygates/project_status?projectKey=${sonar_project} | grep '{' | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["'projectStatus'"]["'status'"];'`
+                        	 sonar_status=`curl -s -u ${sonar_api_token}: http://18.209.23.245:9000/api/qualitygates/project_status?projectKey=${sonar_project} | grep '{' | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["'projectStatus'"]["'status'"];'`
                         	 echo "SonarQube status = \$sonar_status"
 
                         	 case \$sonar_status in
