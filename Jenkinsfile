@@ -1,5 +1,5 @@
 pipeline {
-	agent { label 'Build_server'}
+	agent any
 
     tools {
         // Install the Maven version configured as "M3" and add it to the path.
@@ -27,22 +27,57 @@ pipeline {
 	    }
 	}			
         
-        stage('SonarQube analysis') {
-            steps{
-		  
-		echo "Sonar Scanner"
-		    script{
-		         sh "mvn sonar:sonar \
-                         -Dsonar.host.url=http://3.84.16.46:9000 \
-                         -Dsonar.login=fec74e7156c6b4441ee5acf4ac9fe684a3f99c7b"
-		    }
+       
 	    
-			
-                mail bcc: '', body: ''' Sonarqube Returns QualityGate Failure''',
-                cc: '', from: '', replyTo: '', subject: 'SonarQube Returns Quality Passed', to: 'kpvkpv67@gmail.com'
-                  
+        stage('SonarQube - SAST') {
+            steps {
+                  withSonarQubeEnv('sonar-7') {
+                  sh "mvn sonar:sonar \
+                  -Dsonar.host.url=http://18.209.23.245:9000 \
+                  -Dsonar.login=da2c37151854a8de06fe5cb14d6dd186a6ab40d3"
+                  }
             }
-	}
+        }
+
+        stage('SonarQube Code Quality Status') {
+            steps {
+                  timestamps {
+                      script {
+                            try{
+                       		 def sonar_api_token='da2c37151854a8de06fe5cb14d6dd186a6ab40d3';
+                        	 def sonar_project='webapp';
+                        	 sh """#!/bin/bash +x
+                        	 echo "Checking status of SonarQube Project = ${sonar_project}"
+                        	 sonar_status=`curl -s -u ${sonar_api_token}: http://18.209.23.245:9000/api/qualitygates/project_status?projectKey=${sonar_project} | grep '{' | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["'projectStatus'"]["'status'"];'`
+                        	 echo "SonarQube status = \$sonar_status"
+
+                        	 case \$sonar_status in
+                                 "ERROR")
+                                 echo "Quality Gate Failed - Major Issues > 0"
+                                 echo "Check the SonarQube Project ${sonar_project} for further details."
+                                 exit 1
+                                 ;;
+                                 "OK")
+                                 echo "Quality Gate Passed"
+                                 echo "Check the SonarQube Project ${sonar_project} for further details."
+                                 exit 0
+                                 ;;
+                                 esac
+
+                                 """
+
+                                 echo 'Code Quality Checks Complete.'
+                                  //mark the pipeline as unstable and continue
+                                 }
+			     catch(e){
+                                 currentBuild.result = 'UNSTABLE'
+                                 result = "FAIL"
+                                 }
+                    }
+                }
+           }
+       }		
+               
         
 
         stage('Compile,Test & Package') {
@@ -50,9 +85,7 @@ pipeline {
 		 script {
 			
 		    sh "mvn clean package" 
-				
-                    junit 'target/surefire-reports/*.xml'
-                    archiveArtifacts artifacts: '**/*.jar', followSymlinks: false
+				                   
                  }
 	     }	
         }   
