@@ -77,11 +77,18 @@ pipeline {
                 }
            }
        }		
-               
+        
+	    
+        stage('Notify through Mail') {
+	    steps {
+                mail bcc: '', body: '''SonarQube Quality Gate Passed''',
+                cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: 'kpvkpv67@gmail.com'
+            }
+	}	
         
 
         stage('Compile,Test & Package') {
-	     steps{
+	    steps{
 		 script {
 			
 		    sh "mvn clean package" 
@@ -89,9 +96,27 @@ pipeline {
                  }
 	     }	
         }   
-		 
-       
-        stage('Build Docker Image') {
+	
+	    
+	stage('Nexus Artifactory Upload'){
+	    
+	    steps {
+	    
+             	nexusArtifactUploader artifacts: [[artifactId: 'java-maven', classifier: '', 
+	     	file: '/var/lib/jenkins/workspace/Test/target/java-maven.war', 
+		type: 'war']], 
+        	credentialsId: 'Nexus-pw', 
+		groupId: 'com.example', 
+		nexusUrl: '18.209.23.245:8080/nexus/', 
+		nexusVersion: 'nexus2', 
+		protocol: 'http', 
+		repository: 'Releases', 
+		version: '1.2-SNAPSHOT'       
+        
+	    }
+	}      
+	    
+	stage('Build Docker Image') {
             steps{
                 sh "docker build -t ecr_testing_repo ."  
             }
