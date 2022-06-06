@@ -72,7 +72,7 @@ pipeline {
 			     catch(e){
                                  currentBuild.result = 'UNSTABLE'
                                  result = "FAIL"
-				 mail bcc: '', body: '''SonarQube Quality Gate Passed''', cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: 'kpvkpv67@gmail.com'
+				 mail bcc: '', body: '''SonarQube Quality Gate failed''', cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: 'kpvkpv67@gmail.com'
                              }
                     }
                 }
