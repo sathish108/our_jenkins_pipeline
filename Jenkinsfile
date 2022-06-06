@@ -98,17 +98,7 @@ pipeline {
 	    
 	    steps {
 	    
-             	nexusArtifactUploader artifacts: [[artifactId: 'webapp', classifier: '', 
-	     	file: '/var/lib/jenkins/workspace/Test/target/webapp.war', 
-		type: 'war']], 
-        	credentialsId: 'Nexus-pw', 
-		groupId: 'com.rnstech.org', 
-		nexusUrl: '18.209.23.245:8080/nexus', 
-		nexusVersion: 'nexus2', 
-		protocol: 'http', 
-		repository: 'repositories/releases', 
-		version: '1.0.2'       
-        
+             	nexusArtifactUploader artifacts: [[artifactId: 'java-maven', classifier: '', file: 'java-maven-1.2.war', type: 'war']], credentialsId: 'Nexus-pw', groupId: 'com.example', nexusUrl: '18.209.23.245:8080/nexus/', nexusVersion: 'nexus2', protocol: 'http', repository: 'repositories/releases/', version: '1.2'
 	    }
 	}      
 	    
