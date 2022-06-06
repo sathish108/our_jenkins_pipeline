@@ -85,9 +85,7 @@ pipeline {
 		 script {
 			
 		    sh "mvn clean package" 
-				
-                    junit 'target/surefire-reports/*.xml'
-                    archiveArtifacts artifacts: '**/*.jar', followSymlinks: false
+				                   
                  }
 	     }	
         }   
