@@ -98,7 +98,7 @@ pipeline {
         }   
 	
 	    
-	stage(Nexus Artifactory Upload'){
+	stage('Nexus Artifactory Upload'){
 	    
 	    steps {
 	    
