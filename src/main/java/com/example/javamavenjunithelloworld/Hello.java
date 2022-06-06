@@ -26,6 +26,7 @@ public class Hello {
                     + MAXIMUM_AMOUNT_OF_TIMES + ".");
         }
         this.times = (short) times;
+        System.out.println("Hello");
     }
 
     /**
