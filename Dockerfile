@@ -3,9 +3,8 @@ FROM centos
 LABEL Maintainer=Prasanth
 
 
-RUN yum -y install java
+RUN yum install java-1.7.0-openjdk-devel -y
 RUN java -version
-RUN yum install -y unzip
 RUN  yum install -y wget
 #RUN mkdir /opt/tomcat/
 
