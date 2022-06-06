@@ -34,7 +34,7 @@ pipeline {
                   withSonarQubeEnv('sonar-7') {
                   sh "mvn sonar:sonar \
                   -Dsonar.host.url=http://18.209.23.245:9000 \
-                  -Dsonar.login=fec74e7156c6b4441ee5acf4ac9fe684a3f99c7b"
+                  -Dsonar.login=da2c37151854a8de06fe5cb14d6dd186a6ab40d3"
                   }
             }
         }
@@ -44,7 +44,7 @@ pipeline {
                   timestamps {
                       script {
                             try{
-                       		 def sonar_api_token='fec74e7156c6b4441ee5acf4ac9fe684a3f99c7b';
+                       		 def sonar_api_token='da2c37151854a8de06fe5cb14d6dd186a6ab40d3';
                         	 def sonar_project='webapp';
                         	 sh """#!/bin/bash +x
                         	 echo "Checking status of SonarQube Project = ${sonar_project}"
