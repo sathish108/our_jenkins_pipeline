@@ -107,10 +107,10 @@ pipeline {
 		type: 'war']], 
         	credentialsId: 'Nexus-pw', 
 		groupId: 'com.rnstech.org', 
-		nexusUrl: '18.209.23.245:8080/nexus/', 
+		nexusUrl: '18.209.23.245:8080/nexus', 
 		nexusVersion: 'nexus2', 
 		protocol: 'http', 
-		repository: 'Releases', 
+		repository: 'releases', 
 		version: '1.0.2'       
         
 	    }
