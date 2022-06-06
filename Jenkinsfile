@@ -151,7 +151,7 @@ pipeline {
                     sh 'docker tag ecr_testing_repo:latest 071483313647.dkr.ecr.us-east-1.amazonaws.com/ecr_production_repo:latest'
                     sh 'docker push 071483313647.dkr.ecr.us-east-1.amazonaws.com/ecr_production_repo:latest'
 		}                   
-		mail bcc: '', body: ''' Container Registered in the Production Repository ''',
+		mail bcc: '', body: ''' Container Registered in the Production Repository. Successfully Completed the Pipeline. ''',
                 cc: '', from: '', replyTo: '', subject: 'Jenkins Pipeline Success on the New Commit', to: 'kpvkpv67@gmail.com'
             }
         }
