@@ -69,8 +69,7 @@ pipeline {
                                  echo 'Code Quality Checks Complete.'
                                   //mark the pipeline as unstable and continue
                                  }
-			         mail bcc: '', body: '''SonarQube Quality Gate Passed''', 
-			         cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: "${Developers-Mail}"
+			        
 			     catch(e){
                                  currentBuild.result = 'ABORTED'
                                  result = "FAIL"
@@ -78,6 +77,8 @@ pipeline {
 			         cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: "${Developers-Mail}"
 				 throw e
 			     }
+			         mail bcc: '', body: '''SonarQube Quality Gate Passed''', 
+			         cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: "${Developers-Mail}"
                     }
                 }
            }
