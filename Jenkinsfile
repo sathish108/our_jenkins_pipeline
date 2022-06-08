@@ -74,7 +74,7 @@ pipeline {
                                  currentBuild.result = 'ABORTED'
                                  result = "FAIL"
 				 mail bcc: '', body: '''SonarQube Quality Gate failed''', 
-			         cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: 'kpvkpv67@gmail.com'
+			         cc: '', from: '', replyTo: '', subject: 'This Notification to the Developers Team', to: 'kpvkpv67@gmail.com'
 				 throw e
 			     }
 			         
@@ -138,8 +138,9 @@ pipeline {
         stage('Notify UAT-Team through a Mail') {
 	    steps {
                 mail bcc: '', body: '''Please Pull the Image From ECR With this name for Testing
-                071483313647.ecr.us-east-1.amazonaws.com/ecr_testing_repo:latest''',
-		cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: 'kpvkpv67@gmail.com'
+                "071483313647.ecr.us-east-1.amazonaws.com/ecr_testing_repo:latest"
+		Approval Required to Deploy the API into Production''',
+		cc: '', from: '', replyTo: '', subject: 'This Notification to the API Testing Team', to: 'kpvkpv67@gmail.com'
             }
 	}	
 
@@ -174,13 +175,13 @@ pipeline {
 	    
 	    
 	    
-        stage('Email Notification for Success Delivery of the API Container into ECR Registry') {
+        stage('Email Notification for Successful Delivery of the API Container into ECR Registry') {
             steps{
                                  
 		mail bcc: '', body: ''' Container Registered in the Production Repository. Successfully Completed the CI-CD Pipeline. ''',
-                cc: '', from: '', replyTo: '', subject: 'Jenkins Pipeline Success on the New Commit', to: 'kpvkpv67@gmail.com'
+                cc: '', from: '', replyTo: '', subject: 'To the Developers-Team: Jenkins Pipeline Succeeded on the New Commit', to: 'kpvkpv67@gmail.com'
 		mail bcc: '', body: ''' Container Registered in the Production Repository. Successfully Completed the CI-CD Pipeline. ''',
-                cc: '', from: '', replyTo: '', subject: 'Jenkins Pipeline Success on the New Commit', to: 'kpvkpv67@gmail.com'
+                cc: '', from: '', replyTo: '', subject: 'To the UAT-Team: Jenkins Pipeline Succeeded on the New Commit', to: 'kpvkpv67@gmail.com'
 	    }
         }
     }
