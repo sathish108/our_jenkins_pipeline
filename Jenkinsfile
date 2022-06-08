@@ -74,7 +74,7 @@ pipeline {
                                  currentBuild.result = 'ABORTED'
                                  result = "FAIL"
 				 mail bcc: '', body: '''SonarQube Quality Gate failed''', 
-			         cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: '${Developers-Mail}'
+			         cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: 'kpvkpv67@gmail.com'
 				 throw e
 			     }
 			         
@@ -139,7 +139,7 @@ pipeline {
 	    steps {
                 mail bcc: '', body: '''Please Pull the Image From ECR With this name for Testing
                 071483313647.ecr.us-east-1.amazonaws.com/ecr_testing_repo:latest''',
-		cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: '${UAT-Mail}'
+		cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: 'kpvkpv67@gmail.com'
             }
 	}	
 
@@ -148,7 +148,7 @@ pipeline {
 	    steps {
 	        echo "Approval State"
                  timeout(time: 7, unit: 'DAYS') {                    
-			 input message: 'Do you want to deploy?', submitter: '${Submitter}'
+			 input message: 'Do you want to deploy?', submitter: 'Prasanth'
 		 }
 	    }
         }
