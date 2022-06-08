@@ -77,8 +77,7 @@ pipeline {
 			         cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: "${Developers-Mail}"
 				 throw e
 			     }
-			         mail bcc: '', body: '''SonarQube Quality Gate Passed''', 
-			         cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: "${Developers-Mail}"
+			         
                     }
                 }
            }
