@@ -83,15 +83,14 @@ pipeline {
            }
        }		
         
-	stage(Notify Dev_team On QualityGate Success) {
+
+	stage('Notify Dev_team On QualityGate Success') {
 	    steps{
 		mail bcc: '', body: '''SonarQube Quality Gate Passed''', 
 	        cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: '${Developers-Mail}'
 	    }    
 	    
-	    
-	}
-	    
+	}	    
         
 
         stage('Compile,Test & Package') {
