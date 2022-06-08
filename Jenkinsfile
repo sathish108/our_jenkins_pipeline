@@ -1,12 +1,6 @@
 pipeline {
 	agent any
-    parameters {
-	string( name: 'Submitter', defaultValue: 'Prasanth', description: '')
-	string( name: 'Developers-TeamMailId', defaultValue: 'kpvpv67@gmail.com', description: '') 
-	string( name: 'UAT-TeamMailId', defaultValue: 'kpvpv67@gmail.com', description: '') 
-	string( name: 'Version', defaultValue: '1.2', description: '') 
-    }
-
+   
     tools {
         // Install the Maven version configured as "M3" and add it to the path.
         maven "maven-3.8"
@@ -75,11 +69,13 @@ pipeline {
                                  echo 'Code Quality Checks Complete.'
                                   //mark the pipeline as unstable and continue
                                  }
+			         mail bcc: '', body: '''SonarQube Quality Gate Passed''', 
+			         cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: ${Developers-Mail}"
 			     catch(e){
                                  currentBuild.result = 'ABORTED'
                                  result = "FAIL"
 				 mail bcc: '', body: '''SonarQube Quality Gate failed''', 
-			         cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: "${params.Developers-TeamMailId}"
+			         cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: ${Developers-Mail}"
 				 throw e
 			     }
                     }
@@ -113,7 +109,7 @@ pipeline {
 			              nexusVersion: 'nexus2', 
 			              protocol: 'http', 
 			              repository: 'releases/', 
-				      version: "${params.Version}"
+				      version: "${Version}"
 	    }
 	}      
 	    
@@ -144,7 +140,7 @@ pipeline {
 	    steps {
                 mail bcc: '', body: '''Please Pull the Image From ECR With this name for Testing
                 071483313647.ecr.us-east-1.amazonaws.com/ecr_testing_repo:latest''',
-		cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: "${params.UAT-TeamMailId}"
+		cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: "${UAT-Mail}"
             }
 	}	
 
@@ -153,7 +149,7 @@ pipeline {
 	    steps {
 	        echo "Approval State"
                  timeout(time: 7, unit: 'DAYS') {                    
-			 input message: 'Do you want to deploy?', submitter: "${params.Submitter}"
+			 input message: 'Do you want to deploy?', submitter: "${Submitter}"
 		 }
 	    }
         }
@@ -166,10 +162,10 @@ pipeline {
                     sh 'docker tag ecr_testing_repo:latest 071483313647.dkr.ecr.us-east-1.amazonaws.com/ecr_production_repo:latest'
                     sh 'docker push 071483313647.dkr.ecr.us-east-1.amazonaws.com/ecr_production_repo:latest'
 		}                   
-		mail bcc: '', body: ''' Container Registered in the Production Repository. Successfully Completed the CI-CD Pipeline for the version: "${params.Version}". ''',
-                cc: '', from: '', replyTo: '', subject: 'Jenkins Pipeline Success on the New Commit', to: "${params.Developers-TeamMailId}"
-		mail bcc: '', body: ''' Container Registered in the Production Repository. Successfully Completed the CI-CD Pipeline for the version: "${params.Version}". ''',
-                cc: '', from: '', replyTo: '', subject: 'Jenkins Pipeline Success on the New Commit', to: "${params.UAT-TeamMailId}"
+		mail bcc: '', body: ''' Container Registered in the Production Repository. Successfully Completed the CI-CD Pipeline. ''',
+                cc: '', from: '', replyTo: '', subject: 'Jenkins Pipeline Success on the New Commit', to: "${Developers-Mail}"
+		mail bcc: '', body: ''' Container Registered in the Production Repository. Successfully Completed the CI-CD Pipeline. ''',
+                cc: '', from: '', replyTo: '', subject: 'Jenkins Pipeline Success on the New Commit', to: "${UAT-Mail}"
 	    }
         }
     }
