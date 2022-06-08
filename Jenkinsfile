@@ -39,7 +39,7 @@ pipeline {
             steps {
                   withSonarQubeEnv('sonar-7') {
                   sh "mvn sonar:sonar \
-                  -Dsonar.host.url=http://18.209.23.245:9000 \
+                  -Dsonar.host.url=http://54.90.81.47:9000 \
                   -Dsonar.login=da2c37151854a8de06fe5cb14d6dd186a6ab40d3"
                   }
             }
@@ -54,7 +54,7 @@ pipeline {
                         	 def sonar_project='com.example:java-maven';
                         	 sh """#!/bin/bash +x
                         	 echo "Checking status of SonarQube Project = ${sonar_project}"
-                        	 sonar_status=`curl -s -u ${sonar_api_token}: http://18.209.23.245:9000/api/qualitygates/project_status?projectKey=${sonar_project} | grep '{' | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["'projectStatus'"]["'status'"];'`
+                        	 sonar_status=`curl -s -u ${sonar_api_token}: http://54.90.81.47:9000/api/qualitygates/project_status?projectKey=${sonar_project} | grep '{' | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["'projectStatus'"]["'status'"];'`
                         	 echo "SonarQube status = \$sonar_status"
 
                         	 case \$sonar_status in
@@ -109,7 +109,7 @@ pipeline {
 			              file: 'target/java-maven-1.2.war', type: 'war']], 
 			              credentialsId: 'Nexus-pw', 
 			              groupId: 'com.example', 
-			              nexusUrl: '18.209.23.245:8080/nexus', 
+			              nexusUrl: '54.90.81.47:8080/nexus', 
 			              nexusVersion: 'nexus2', 
 			              protocol: 'http', 
 			              repository: 'releases/', 
