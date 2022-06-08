@@ -153,14 +153,30 @@ pipeline {
 	    }
         }
 
-
-        stage('Uploading The Image into ECR for Production Repository') {
+        
+	 
+        stage('Tagging the Docker Image with ECR Repository Name') {
+            steps{
+                sh "docker tag ecr_testing_repo:latest 071483313647.dkr.ecr.us-east-1.amazonaws.com/ecr_production_repo:latest"  
+            }
+        }
+    
+    
+        stage('Uploading The Image into ECR in Production Repository') {
             steps{
                 script{
-                    sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 071483313647.dkr.us-east-1.amazonaws.com'
-                    sh 'docker tag ecr_testing_repo:latest 071483313647.dkr.ecr.us-east-1.amazonaws.com/ecr_production_repo:latest'
+                    sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 071483313647.dkr.ecr.us-east-1.amazonaws.com'
                     sh 'docker push 071483313647.dkr.ecr.us-east-1.amazonaws.com/ecr_production_repo:latest'
-		}                   
+                }
+            }
+        }   
+	    
+	    
+	    
+	    
+        stage('Uploading The Image into ECR for Production Repository') {
+            steps{
+                                 
 		mail bcc: '', body: ''' Container Registered in the Production Repository. Successfully Completed the CI-CD Pipeline. ''',
                 cc: '', from: '', replyTo: '', subject: 'Jenkins Pipeline Success on the New Commit', to: '${Developers-Mail}'
 		mail bcc: '', body: ''' Container Registered in the Production Repository. Successfully Completed the CI-CD Pipeline. ''',
