@@ -119,7 +119,7 @@ pipeline {
         }
 	    
 
-        stage('Tagging the Docker Image with ECR Repository Name') {
+        stage('Tagging the Docker Image with ECR Testing Repository Name') {
             steps{
                 sh "docker tag ecr_testing_repo:latest 071483313647.dkr.ecr.us-east-1.amazonaws.com/ecr_testing_repo:latest"  
             }
@@ -155,7 +155,7 @@ pipeline {
 
         
 	 
-        stage('Tagging the Docker Image with ECR Repository Name') {
+        stage('Tagging the Docker Image with ECR Production Repository Name') {
             steps{
                 sh "docker tag ecr_testing_repo:latest 071483313647.dkr.ecr.us-east-1.amazonaws.com/ecr_production_repo:latest"  
             }
@@ -174,7 +174,7 @@ pipeline {
 	    
 	    
 	    
-        stage('Uploading The Image into ECR for Production Repository') {
+        stage('Email Notification for Success Delivery of the API Container into ECR Registry') {
             steps{
                                  
 		mail bcc: '', body: ''' Container Registered in the Production Repository. Successfully Completed the CI-CD Pipeline. ''',
