@@ -1,5 +1,11 @@
 pipeline {
 	agent any
+    parameters {
+	string( name: 'Submitter', defaultValue: 'Prasanth', description: '')
+	string( name: 'Developers-TeamMailId', defaultValue: 'kpvpv67@gmail.com', description: '') 
+	string( name: 'UAT-TeamMailId', defaultValue: 'kpvpv67@gmail.com', description: '') 
+	string( name: 'Version', defaultValue: '1.2', description: '') 
+    }
 
     tools {
         // Install the Maven version configured as "M3" and add it to the path.
@@ -11,14 +17,14 @@ pipeline {
     stages {
 
         
-        stage('Pull The Code From Git To Jenkins Server') {
+        stage('Pulling The Code From Git To Jenkins Server') {
             steps{
                git branch: 'main', credentialsId: 'Github', url: 'https://github.com/kprasanth999/our_jenkins_pipeline.git'
 	        }
 	    }	
 	 
 	    
-	stage('Compiling the Code') {
+	stage('Compiling the Code With Maven-3.8') {
 	    steps{
 	        echo "COMPILING THE CODE"
                 script{
@@ -29,7 +35,7 @@ pipeline {
         
        
 	    
-        stage('SonarQube - SAST') {
+        stage('SonarQube Connection with Jenkins') {
             steps {
                   withSonarQubeEnv('sonar-7') {
                   sh "mvn sonar:sonar \
@@ -39,7 +45,7 @@ pipeline {
             }
         }
 
-        stage('SonarQube Code Quality Status') {
+        stage('Pulling the SonarQube Code Quality Status') {
             steps {
                   timestamps {
                       script {
@@ -72,7 +78,8 @@ pipeline {
 			     catch(e){
                                  currentBuild.result = 'ABORTED'
                                  result = "FAIL"
-				 mail bcc: '', body: '''SonarQube Quality Gate failed''', cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: 'kpvkpv67@gmail.com'
+				 mail bcc: '', body: '''SonarQube Quality Gate failed''', 
+			         cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: ${params.Developers-TeamMailId}
 				 throw e
 			     }
                     }
@@ -98,7 +105,15 @@ pipeline {
 	    
 	    steps {
 	    
-             	nexusArtifactUploader artifacts: [[artifactId: 'java-maven', classifier: '', file: 'target/java-maven-1.2.war', type: 'war']], credentialsId: 'Nexus-pw', groupId: 'com.example', nexusUrl: '18.209.23.245:8080/nexus', nexusVersion: 'nexus2', protocol: 'http', repository: 'releases/', version: '1.2'
+             	nexusArtifactUploader artifacts: [[artifactId: 'java-maven', classifier: '', 
+			              file: 'target/java-maven-1.2.war', type: 'war']], 
+			              credentialsId: 'Nexus-pw', 
+			              groupId: 'com.example', 
+			              nexusUrl: '18.209.23.245:8080/nexus', 
+			              nexusVersion: 'nexus2', 
+			              protocol: 'http', 
+			              repository: 'releases/', 
+				      version: ${params.Version}
 	    }
 	}      
 	    
@@ -125,11 +140,11 @@ pipeline {
             }
         }
       
-        stage('Notify UAT through a Mail') {
+        stage('Notify UAT-Team through a Mail') {
 	    steps {
                 mail bcc: '', body: '''Please Pull the Image From ECR With this name for Testing
                 071483313647.ecr.us-east-1.amazonaws.com/ecr_testing_repo:latest''',
-                cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: 'kpvkpv67@gmail.com'
+		cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: ${params.UAT-TeamMailId}
             }
 	}	
 
@@ -138,7 +153,7 @@ pipeline {
 	    steps {
 	        echo "Approval State"
                  timeout(time: 7, unit: 'DAYS') {                    
-	               input message: 'Do you want to deploy?', submitter: 'Prasanth'
+			 input message: 'Do you want to deploy?', submitter: ${params.Submitter}
 		 }
 	    }
         }
@@ -151,9 +166,11 @@ pipeline {
                     sh 'docker tag ecr_testing_repo:latest 071483313647.dkr.ecr.us-east-1.amazonaws.com/ecr_production_repo:latest'
                     sh 'docker push 071483313647.dkr.ecr.us-east-1.amazonaws.com/ecr_production_repo:latest'
 		}                   
-		mail bcc: '', body: ''' Container Registered in the Production Repository. Successfully Completed the Pipeline. ''',
-                cc: '', from: '', replyTo: '', subject: 'Jenkins Pipeline Success on the New Commit', to: 'kpvkpv67@gmail.com'
-            }
+		mail bcc: '', body: ''' Container Registered in the Production Repository. Successfully Completed the CI-CD Pipeline for the version: \${params.Version}. ''',
+                cc: '', from: '', replyTo: '', subject: 'Jenkins Pipeline Success on the New Commit', to: ${params.Developers-TeamMailId}
+		mail bcc: '', body: ''' Container Registered in the Production Repository. Successfully Completed the CI-CD Pipeline for the version: ${params.Version}. ''',
+                cc: '', from: '', replyTo: '', subject: 'Jenkins Pipeline Success on the New Commit', to: ${params.UAT-TeamMailId}
+	    }
         }
     }
 }
