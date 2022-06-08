@@ -102,7 +102,7 @@ pipeline {
 	    steps {
 	    
              	nexusArtifactUploader artifacts: [[artifactId: 'java-maven', classifier: '', 
-			              file: 'target/java-maven-1.2.war', type: 'war']], 
+				      file: 'target/java-maven-"${Version}".war', type: 'war']], 
 			              credentialsId: 'Nexus-pw', 
 			              groupId: 'com.example', 
 			              nexusUrl: '54.90.81.47:8080/nexus', 
