@@ -70,12 +70,12 @@ pipeline {
                                   //mark the pipeline as unstable and continue
                                  }
 			         mail bcc: '', body: '''SonarQube Quality Gate Passed''', 
-			         cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: ${Developers-Mail}"
+			         cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: "${Developers-Mail}"
 			     catch(e){
                                  currentBuild.result = 'ABORTED'
                                  result = "FAIL"
 				 mail bcc: '', body: '''SonarQube Quality Gate failed''', 
-			         cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: ${Developers-Mail}"
+			         cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: "${Developers-Mail}"
 				 throw e
 			     }
                     }
