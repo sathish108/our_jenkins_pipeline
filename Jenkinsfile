@@ -74,7 +74,7 @@ pipeline {
                                  currentBuild.result = 'ABORTED'
                                  result = "FAIL"
 				 mail bcc: '', body: '''SonarQube Quality Gate failed''', 
-			         cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: "${Developers-Mail}"
+			         cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: '${Developers-Mail}'
 				 throw e
 			     }
 			         
@@ -83,7 +83,15 @@ pipeline {
            }
        }		
         
-	
+	stage(Notify Dev_team On QualityGate Success) {
+	    steps{
+		mail bcc: '', body: '''SonarQube Quality Gate Passed''', 
+	        cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: '${Developers-Mail}'
+	    }    
+	    
+	    
+	}
+	    
         
 
         stage('Compile,Test & Package') {
@@ -109,7 +117,7 @@ pipeline {
 			              nexusVersion: 'nexus2', 
 			              protocol: 'http', 
 			              repository: 'releases/', 
-				      version: ${Version}
+				      version: '${Version}'
 	    }
 	}      
 	    
@@ -140,7 +148,7 @@ pipeline {
 	    steps {
                 mail bcc: '', body: '''Please Pull the Image From ECR With this name for Testing
                 071483313647.ecr.us-east-1.amazonaws.com/ecr_testing_repo:latest''',
-		cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: ${UAT-Mail}
+		cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: '${UAT-Mail}'
             }
 	}	
 
@@ -149,7 +157,7 @@ pipeline {
 	    steps {
 	        echo "Approval State"
                  timeout(time: 7, unit: 'DAYS') {                    
-			 input message: 'Do you want to deploy?', submitter: ${Submitter}
+			 input message: 'Do you want to deploy?', submitter: '${Submitter}'
 		 }
 	    }
         }
@@ -163,9 +171,9 @@ pipeline {
                     sh 'docker push 071483313647.dkr.ecr.us-east-1.amazonaws.com/ecr_production_repo:latest'
 		}                   
 		mail bcc: '', body: ''' Container Registered in the Production Repository. Successfully Completed the CI-CD Pipeline. ''',
-                cc: '', from: '', replyTo: '', subject: 'Jenkins Pipeline Success on the New Commit', to: ${Developers-Mail}
+                cc: '', from: '', replyTo: '', subject: 'Jenkins Pipeline Success on the New Commit', to: '${Developers-Mail}'
 		mail bcc: '', body: ''' Container Registered in the Production Repository. Successfully Completed the CI-CD Pipeline. ''',
-                cc: '', from: '', replyTo: '', subject: 'Jenkins Pipeline Success on the New Commit', to: ${UAT-Mail}
+                cc: '', from: '', replyTo: '', subject: 'Jenkins Pipeline Success on the New Commit', to: '${UAT-Mail}'
 	    }
         }
     }
