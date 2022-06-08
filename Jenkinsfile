@@ -74,7 +74,7 @@ pipeline {
                                  currentBuild.result = 'ABORTED'
                                  result = "FAIL"
 				 mail bcc: '', body: '''SonarQube Quality Gate failed''', 
-			         cc: '', from: '', replyTo: '', subject: 'This Notification to the Developers Team', to: 'kpvkpv67@gmail.com'
+			         cc: '', from: '', replyTo: '', subject: 'This Notification is to the Developers Team', to: 'kpvkpv67@gmail.com'
 				 throw e
 			     }
 			         
@@ -140,7 +140,7 @@ pipeline {
                 mail bcc: '', body: '''Please Pull the Image From ECR With this name for Testing
                 "071483313647.ecr.us-east-1.amazonaws.com/ecr_testing_repo:latest"
 		Approval Required to Deploy the API into Production''',
-		cc: '', from: '', replyTo: '', subject: 'This Notification to the API Testing Team', to: 'kpvkpv67@gmail.com'
+		cc: '', from: '', replyTo: '', subject: 'This Notification is to the API-Testing Team', to: 'kpvkpv67@gmail.com'
             }
 	}	
 
