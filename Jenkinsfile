@@ -178,9 +178,9 @@ pipeline {
             steps{
                                  
 		mail bcc: '', body: ''' Container Registered in the Production Repository. Successfully Completed the CI-CD Pipeline. ''',
-                cc: '', from: '', replyTo: '', subject: 'Jenkins Pipeline Success on the New Commit', to: '${Developers-Mail}'
+                cc: '', from: '', replyTo: '', subject: 'Jenkins Pipeline Success on the New Commit', to: 'kpvkpv67@gmail.com'
 		mail bcc: '', body: ''' Container Registered in the Production Repository. Successfully Completed the CI-CD Pipeline. ''',
-                cc: '', from: '', replyTo: '', subject: 'Jenkins Pipeline Success on the New Commit', to: '${UAT-Mail}'
+                cc: '', from: '', replyTo: '', subject: 'Jenkins Pipeline Success on the New Commit', to: 'kpvkpv67@gmail.com'
 	    }
         }
     }
