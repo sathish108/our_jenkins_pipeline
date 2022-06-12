@@ -1,5 +1,5 @@
 pipeline {
-	agent self
+	agent any
    
     tools {
         // Install the Maven version configured as "M3" and add it to the path.
@@ -14,17 +14,17 @@ pipeline {
         stage('Pulling The Code From Git To Jenkins Server') {
             steps{
                 git credentialsId: 'github_sathishcred', url: 'https://github.com/sathish108/our_jenkins_pipeline.git'
-	    }
-	}	
-	 
+	        }
+	    }	
+  	 
 	    
-	stage('Compiling the Code With Maven-3.8') {
-	    steps{
-	        echo "COMPILING THE CODE"
+	    stage('Compiling the Code With Maven-3.8') {
+	        steps{
+	            echo "COMPILING THE CODE"
                 script{
-		    sh "mvn clean compile" 
-		}   
-	    }
+		           sh "mvn clean compile" 
+		        }   
+	        }
 	}			
         
        

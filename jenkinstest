@@ -13,11 +13,5 @@ pipeline {
                 git credentialsId: 'github_sathishcred', url: 'https://github.com/sathish108/our_jenkins_pipeline.git'
             }
         }
-        
-
-
-    }
-
-
-
+   }
 }
