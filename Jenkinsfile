@@ -13,8 +13,7 @@ pipeline {
         
         stage('Pulling The Code From Git To Jenkins Server') {
             steps{
-                git credentialsId: 'github_sathishcred', url: 'https://github.com/sathish108/our_jenkins_pipeline.git'
-	        }
+               git branch: 'main', credentialsId: 'github_sathishcred', url: 'https://github.com/sathish108/our_jenkins_pipeline.git'	        }
 	    }	
   	 
 	    
