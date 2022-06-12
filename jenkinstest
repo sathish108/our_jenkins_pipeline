@@ -1,0 +1,12 @@
+pipeline {
+    agent any
+
+    tools {
+         echo "tools setup"
+         maven "maven3.8"  
+
+    }
+
+
+
+}
