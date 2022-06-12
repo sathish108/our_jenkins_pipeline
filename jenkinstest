@@ -9,7 +9,7 @@ pipeline {
         stage("clone code from git") {
             steps {
                 echo "cloning code from git "
-                git branch: 'main', credentialsId: 'github_sathishcred', url: 'https://github.com/sathish108/our_jenkins_pipeline.git'            
+                git branch: 'main', credentialsId: 'github_cred2', url: 'https://github.com/sathish108/our_jenkins_pipeline.git'            
             }
         }
         stage('Compiling the Code With Maven3.8') {
@@ -24,8 +24,8 @@ pipeline {
             steps {
                   withSonarQubeEnv('sonar-7') {
                   sh "mvn sonar:sonar \
-                  -Dsonar.host.url=http://54.197.143.165:9000 \
-                  -Dsonar.login=64eedc0a503f148d53834fffbc29aedbe79f8572"
+                  -Dsonar.host.url=http://18.212.239.195:9000 \
+                  -Dsonar.login=10c6d80464174bb5e641a5c9ba73bca97fe37eb1"
                   }
             }
         }
