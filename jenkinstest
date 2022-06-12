@@ -6,6 +6,17 @@ pipeline {
          maven "maven3.8"  
 
     }
+    stages {
+        stage("clone code from git") {
+            steps {
+                echo "cloning code from git "
+                git credentialsId: 'github_sathishcred', url: 'https://github.com/sathish108/our_jenkins_pipeline.git'
+            }
+        }
+        
+
+
+    }
 
 
 
