@@ -19,6 +19,16 @@ pipeline {
 		           sh "mvn clean compile" 
 		        }   
 	        }
-	    }	
+	    }
+        stage('SonarQube Connection with Jenkins') {
+            steps {
+                  withSonarQubeEnv('sonar-7') {
+                  sh "mvn sonar:sonar \
+                  -Dsonar.host.url=http://54.197.143.165:9000 \
+                  -Dsonar.login=64eedc0a503f148d53834fffbc29aedbe79f8572"
+                  }
+            }
+        }
+	
    }
 }
